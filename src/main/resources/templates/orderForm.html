@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/config:: configFragment">
+<meta charset="utf-8">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+	<div class="container">
+		<div align="center" class="card" style="width: 300px">
+			<img class="card-img-top" src="/images/egg.jpg" alt="Card image">
+			<div class="card-body">
+				<h4 class="card-title" th:text="${product.product_name}">왕란 1판</h4>
+				<p class="card-text" th:text="${product.product_content}">신선한 왕란 입니다.</p>
+				<p class="card-text" th:text="${product.product_price}" id="product_price">1,500</p>
+				수량 : <input id="quantity" type="number" min="1" max="10" value="1">
+				<p id="totalPrice" th:text="${product.product_price}" class="card-text">총액</p>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label for="name">이름</label> 
+			<input type="text" th:if="${user} != null" th:value="${user.user_name}" class="form-control" placeholder="이름" id="user_name">
+			<input type="text" th:unless="${user} != null" class="form-control" placeholder="이름" id="user_name">
+		</div>
+		<div class="form-group">
+			<label for="addr">주소</label><p>
+			<div class="form-check-inline">
+				<label class="form-check-label">
+					<input type="radio" checked="checked" class="form-check-input" name="addrRadio" id="new_radio">새 주소
+				</label>
+			</div>
+			<div class="form-check-inline" th:if="${user} != null">
+				<label class="form-check-label">
+					<input type="radio" th:attr="checked=${user} != null" class="form-check-input" name="addrRadio" id="pre_radio">기존 주소
+				</label>
+			</div>
+			<div id="new_addr">
+				<input type="button" class="btn btn-primary" onclick="DaumPostcode()" value="주소 찾기"><br> 
+				<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소">
+				<input type="text" class="form-control" id="sample4_jibunAddress" placeholder="지번주소"><span id="guide" style="color: #999"></span>
+				<input type="text" class="form-control" placeholder="상세주소" id="user_detailAddr">
+			</div>
+		</div>
+		
+		<div id="pre_addr" th:if="${user} != null" class="form-group">
+			<input type="text" th:value="${user.user_addr}" class="form-control" placeholder="기존주소" id="user_preAddr">
+		</div>
+
+		<div class="form-group">
+			<label for="phone">phone</label> 
+			<input type="text" th:if="${user} != null" th:value="${user.user_phone}" class="form-control" placeholder="- 제외 번호만 입력하세요." maxlength="11" id="user_phone">
+			<input type="text" th:unless="${user} != null" class="form-control" placeholder="- 제외 번호만 입력하세요." maxlength="11" id="user_phone">
+		</div>
+
+		<button th:if="${user} != null" id="btn-save" type="button" th:onclick="|order(${user.user_no}, ${product.product_no})|" class="btn btn-primary">주문하기</button>
+		<button th:unless="${user} != null" id="btn-save" type="button" th:onclick="|order(0,${product.product_no})|" class="btn btn-primary">주문하기</button>
+	</div>
+	<footer th:replace="fragments/footer:: footFragment"></footer>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript" src="/js/order.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8001
+
+---
+spring:
+  profiles: dev
+      
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/almall?serverTimezone=Asia/Seoul
+    username: admin_almall
+    password: almall1@
+  sql:
+    init:
+      enabled: false
+      #sql 파일 경로
+      schema-locations: classpath:init.sql
+      
+  thymeleaf:
+    cache: false
+    mode: HTML    
+
+mybatis:
+  mapper-locations: classpath:/sqlMap/sqlmapper_*.xml
+  
+logging:
+  level:
+    root: info
+    com.almall.kk.controller: debug
+    com.almall.kk.service: debug
+    com.almall.kk.config.auth: debug

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/config:: configFragment">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+
+
+	<div class="container">
+		<h3 align="center">당일 신선한 달걀 판매를 하고 있는 알몰 입니다.</h3>
+	</div>
+	<div class="d-flex justify-between">
+	<th:block th:if="${size} > 0">
+		<div th:each="list : ${products}" align="center" class="card" style="width: 300px">
+			<img class="card-img-top" src="/images/egg.jpg" alt="Card image">
+			<div class="card-body">
+				<h4 class="card-title" th:text="${list.product_name}">왕란 1판</h4>
+				<p class="card-text" th:text="${list.product_content}">신선한 왕란 입니다.</p>
+				<p class="card-text" th:text="${list.product_price}">1,500</p>
+				<a th:href="@{'/auth/order/'+${list.product_no}}" class="btn btn-primary">구매하기</a>
+			</div>
+		</div>
+		
+		</th:block>
+	</div>
+	<footer th:replace="fragments/footer:: footFragment"></footer>
+
+</body>
+</html>

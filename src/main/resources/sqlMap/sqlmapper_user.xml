@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.almall.kk.mapper.UserMapper">
+	<insert id="setUser" parameterType="com.almall.kk.vo.UserVO">
+		INSERT INTO USER
+		(
+			user_id,
+			user_name,
+			user_password,
+			user_addr,
+			user_phone,
+			user_email,
+			user_role,
+			create_at
+		)
+		VALUES 
+		(
+			#{user_id},
+			#{user_name},
+			#{user_password},
+			#{user_addr},
+			#{user_phone},
+			#{user_email},
+			#{user_role},
+			now()
+		)
+	</insert>
+	
+	<select id="findById" resultType="com.almall.kk.vo.PrincipalVO">
+		SELECT 
+			user_id,
+			user_password,
+			user_role
+		FROM
+			user AS u
+		INNER JOIN user_role AS ur
+		ON u.user_no = ur.user_no
+		INNER JOIN role as r
+		ON ur.role_no = r.role_no
+		WHERE
+			u.user_id = #{userId}
+	</select>
+	
+	<select id="findUserNo" resultType="Integer">
+		SELECT
+			user_no
+		FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="findRoleNo" resultType="Integer">
+		SELECT 
+			role_no
+		FROM role
+		WHERE role_name = #{roleName}
+	</select>
+	
+	<insert id="setUserRole">
+		INSERT INTO user_role
+        (
+            user_no,
+            role_no
+        )
+        VALUES
+        (
+            #{userNo},
+            #{roleNo}
+        )
+	</insert>
+	
+	<select id="findByName" resultType="com.almall.kk.vo.UserVO">
+		SELECT
+			user_no,
+			user_name,
+			user_addr,
+			user_phone
+		FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+</mapper>

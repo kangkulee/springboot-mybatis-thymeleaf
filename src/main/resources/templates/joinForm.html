@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/config:: configFragment">
+<meta charset="utf-8">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+	<div class="container">
+		<div class="form-group">
+			<label for="id">아이디</label> <input type="text" class="form-control" placeholder="아이디" id="user_id">
+		</div>
+		<div class="form-group">
+			<label for="name">이름</label> <input type="text" class="form-control" placeholder="이름" id="user_name">
+		</div>
+		<div class="form-group">
+			<label for="password">패스워드</label> <input type="password" class="form-control" placeholder="패스워드" id="user_password">
+		</div>
+		<div class="form-group">
+			<label for="addr">주소</label><p>
+			<input type="button" class="btn btn-primary" onclick="DaumPostcode()" value="주소 찾기"><br> 
+			<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소">
+			<input type="text" class="form-control" id="sample4_jibunAddress" placeholder="지번주소"><span id="guide" style="color: #999"></span>
+			<input type="text" class="form-control" placeholder="상세주소" id="user_detailAddr">
+		</div>
+
+		<div class="form-group">
+			<label for="phone">phone</label> <input type="text" class="form-control" placeholder="- 제외 번호만 입력하세요." maxlength="11" id="user_phone">
+		</div>
+
+		<div class="form-group">
+			<label for="email">Email</label> <input type="email" class="form-control" placeholder="이메일" id="user_email">
+		</div>
+
+		<button id="btn-save" type="button" th:onclick="save()" class="btn btn-primary">회원가입</button>
+		<!-- <button id="btn-chkusername" type="button" th:onclick="chkusername()" class="btn btn-primary">username중복체크</button> -->
+	</div>
+	<footer th:replace="fragments/footer:: footFragment"></footer>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript" src="/js/user.js"></script>
+</body>
+</html>
+
+

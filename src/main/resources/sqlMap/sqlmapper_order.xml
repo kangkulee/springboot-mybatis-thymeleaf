@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.almall.kk.mapper.OrderMapper">
+	<insert id="setOrder" parameterType="com.almall.kk.vo.OrderVO">
+		INSERT INTO orders
+        (
+            user_no,
+            product_no,
+            order_date,
+            order_quantity,
+            order_totalPrice
+        )
+        VALUES
+        (
+            #{user_no},
+            #{product_no},
+            now(),
+            #{order_quantity},
+            #{order_totalPrice}
+        )
+	</insert>
+</mapper>
