@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/config:: configFragment">
+<meta charset="utf-8">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+	<div class="container">
+		<h3>자유 게시판</h3>
+		<p>자유로운 글 작성을 할 수 있습니다.</p>
+		<div class="d-flex justify-content-end">
+			<div class="d-flex col-sd mb-3">
+				<select class="form-control" id="column">
+					<option value="freeboard_no">글번호</option>
+					<option value="freeboard_title" selected="selected">제목</option>
+					<option value="user_id">작성자</option>
+				</select>
+  				<input type="text" class="form-control" id="search" placeholder="Search">
+			</div>
+  				<div class="input-group-append col-xs mb-3">
+    				<button class="btn btn-success" type="button" id="searchBtn" onclick="search()">검색</button>
+				</div>
+		</div>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>글번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${size} == 0">
+					<td colspan=4>게시된 글이 없습니다.</td>
+				</tr>
+				<tr th:unless="${size} == 0" th:each="list : ${boardList}" th:onclick="|location.href='/board/${list.freeboard_no}'|">
+					<td th:text="${list.freeboard_no}">1</td>
+					<td th:text="${list.freeboard_title}">제목</td>
+					<td th:text="${list.user_id}">아이디</td>					
+					<td th:text="${#dates.format(list.create_at, 'yyyy-MM-dd HH:mm:ss')}">2021.06.17</td>
+				</tr>
+			</tbody>
+		</table>
+		<ul class="pagination justify-content-center">
+			<th:block th:if="${pageHandler.prevPage}">
+				<li class="page-item" th:if="${search} == null">
+					<a class="page-link"  th:href="@{'/auth/freeboard/'+${pageHandler.getStartPage() -1}}"><</a>
+				</li>
+				<li class="page-item" th:unless="${search} == null">			
+					<a class="page-link" th:href="@{'/auth/freeboard/'+${pageHandler.getStartPage() -1}+'/'+${column}+'/'+${search}}"><</a>
+				</li>
+			</th:block>
+			
+			<th:block th:if="${size} > 0" th:each="index : ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+				<li class="page-item" th:classappend="${index} == ${pageHandler.getPageNum()} ? active">
+					<a class="page-link" th:if="${search} == null" th:text="${index}" th:href="@{'/auth/freeboard/'+${index}}">1</a>
+					<a class="page-link" th:unless="${search} == null" th:text="${index}" th:href="@{'/auth/freeboard/'+${index}+'/'+${column}+'/'+${search}}">1</a>										
+				</li>
+			</th:block>
+			
+			<th:block th:if="${pageHandler.nextPage}">
+				<li class="page-item" th:if="${search} == null">
+					<a class="page-link" th:href="@{'/auth/freeboard/'+${pageHandler.getEndPage() +1}}">></a>
+				</li>
+				<li class="page-item" th:unless="${search} == null">
+					<a class="page-link" th:href="@{'/auth/freeboard/'+${pageHandler.getEndPage() +1}+'/'+${column}+'/'+${search}}">></a>				
+				</li>
+			</th:block>
+		</ul>
+		<div class="d-flex justify-content-end">
+			<a th:href="@{/auth/write}">
+				<button type="button" th:if="${principal} != null" class="btn btn-outline-primary">글쓰기</button>
+			</a>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer:: footFragment"></footer>
+	<script src="/js/board.js"></script>
+</body>
+</html>

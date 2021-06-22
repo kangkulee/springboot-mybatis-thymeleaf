@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.almall.kk.mapper.BoardMapper">
+	<insert id="writeBoard" parameterType="com.almall.kk.vo.FreeBoardVO">
+		INSERT INTO freeboard
+        (
+            user_no,
+            freeboard_title,
+            freeboard_content
+        )
+        VALUES
+        (
+            #{user_no},
+            #{freeboard_title},
+            #{freeboard_content}
+        )
+	</insert>
+	
+	<select id="getFreeBoard" parameterType="com.almall.kk.vo.FreeBoardVO" resultType="com.almall.kk.vo.FreeBoardVO">
+		SELECT
+			freeboard_no,
+			u.user_no,
+			user_id,
+			freeboard_title,
+			fb.create_at
+		FROM
+			freeboard AS fb
+		INNER JOIN
+			user AS u
+		ON fb.user_no = u.user_no
+		<if test="column != null">
+			WHERE ${column} LIKE '%${search}%'
+		</if>
+		ORDER BY freeboard_no DESC
+		LIMIT #{limitCnt}, #{contentNum}
+	</select>
+	<select id="getFreeBoardTotalCnt" parameterType="com.almall.kk.vo.FreeBoardVO" resultType="Integer">
+		SELECT
+			COUNT(freeboard_no)
+		FROM
+			freeboard
+		<if test="column != null">
+			WHERE ${column} LIKE '%${search}%'
+		</if>
+	</select>
+	<select id="findByNo" resultType="com.almall.kk.vo.FreeBoardVO">
+		SELECT
+			freeboard_no,
+			u.user_no,
+			user_id,
+			freeboard_title,
+			freeboard_content,
+			fb.create_at
+		FROM
+			freeboard AS fb
+		INNER JOIN
+			user AS u
+		ON fb.user_no = u.user_no
+		WHERE freeboard_no = #{boardNo}
+	</select>
+	<update id="updateBoard" parameterType="com.almall.kk.vo.FreeBoardVO">
+		UPDATE freeboard
+			SET
+				freeboard_title = #{freeboard_title},
+				freeboard_content = #{freeboard_content}
+		WHERE freeboard_no = ${freeboard_no}
+	</update>
+	<delete id="deleteBoard">
+		DELETE FROM freeboard
+		WHERE freeboard_no = #{boardNo}
+	</delete>
+</mapper>

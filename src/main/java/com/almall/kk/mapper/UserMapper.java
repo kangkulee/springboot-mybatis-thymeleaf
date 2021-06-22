@@ -11,8 +11,6 @@ import com.almall.kk.vo.PrincipalVO;
 import com.almall.kk.vo.ProductVO;
 import com.almall.kk.vo.RoleType;
 
-
-
 @Mapper
 @Repository
 public interface UserMapper {
@@ -28,5 +26,9 @@ public interface UserMapper {
 	int setUserRole(@Param("userNo") int userNo, @Param("roleNo") int roleNo);
 
 	UserVO findByName(@Param("userId") String userId);
+
+	UserVO findByUserInfo(@Param("userId") String userId);
+
+	int updateUserDetail(UserVO userVO);
 
 }

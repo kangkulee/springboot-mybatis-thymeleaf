@@ -49,5 +49,16 @@ CREATE TABLE IF NOT EXISTS user_role
   	FOREIGN KEY (role_no) REFERENCES role (role_no)
 );
 
+CREATE TABLE IF NOT EXISTS freeboard
+(
+	freeboard_no INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	user_no INT NOT NULL,
+	freeboard_title VARCHAR(200) NOT NULL,
+	freeboard_content TEXT NOT NULL,
+	create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT freeboard_order_no_pkey PRIMARY KEY (freeboard_no),
+	CONSTRAINT freeboard_user_no_fkey FOREIGN KEY (user_no) REFERENCES user(user_no)
+);
+
 INSERT INTO role VALUE(1, "ADMIN");
 INSERT INTO role VALUE(2, "USER");

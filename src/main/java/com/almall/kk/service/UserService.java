@@ -38,4 +38,13 @@ public class UserService {
 		}
 		return -1;
 	}
+
+	@Transactional
+	public int updateUserDetail(int userNo, UserVO userVO) {
+		userVO.setUser_no(userNo);
+		if(userVO.getUser_password() != null) {
+			userVO.setUser_password(encode.encode(userVO.getUser_password()));
+		}
+		return userMapper.updateUserDetail(userVO);
+	}
 }

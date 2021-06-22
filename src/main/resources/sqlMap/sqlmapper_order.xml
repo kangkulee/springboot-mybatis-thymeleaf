@@ -19,4 +19,26 @@
             #{order_totalPrice}
         )
 	</insert>
+	
+	<select id="getOrderList" resultType="com.almall.kk.vo.OrderVO">
+		SELECT
+			order_no,
+			p.product_no AS product_no,
+			p.product_name AS product_name,
+			order_quantity,
+			order_totalPrice,
+			order_date
+		FROM orders
+		INNER JOIN product AS p
+		ON p.product_no = orders.product_no
+		WHERE orders.user_no = #{userNo}
+	</select>
+	<select id="getOrderListTotalCnt" parameterType="com.almall.kk.vo.OrderVO" resultType="Integer">
+		SELECT
+			COUNT(p.product_no)
+		FROM orders
+		INNER JOIN product AS p
+		ON p.product_no = orders.product_no
+		WHERE orders.user_no = #{userNo}
+	</select>
 </mapper>

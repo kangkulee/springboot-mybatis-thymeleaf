@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/config:: configFragment">
+<meta charset="utf-8">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+	<div class="container">
+		<button class="btn btn-secondary" th:onclick="history.back()">돌아가기</button>
+		<a th:href="@{'/board/'+${board.freeboard_no}+'/boardform'}" th:if="${board.user_id} == ${#authentication.name}" class="btn btn-warning">수정</a>
+		<button th:if="${board.user_id} == ${#authentication.name}" th:onclick="|deleteBoard(${board.freeboard_no})|" class="btn btn-danger">삭제</button>
+		<br /> <br />
+		<div>
+			글 번호 : <span><i th:text="${board.freeboard_no}">글 번호</i></span>
+			 작성자 : <span><i th:text="${board.user_id}">작성자</i></span>
+		</div>
+		<br /> <br />
+		<div class="form-group">
+			<h3 th:text="${board.freeboard_title}"></h3>
+		</div>
+		<hr />
+		<div class="form-group">
+			<div th:utext="${board.freeboard_content}"></div>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer:: footFragment"></footer>
+</body>
+<script type="text/javascript" src="/js/board.js"></script>
+</html>

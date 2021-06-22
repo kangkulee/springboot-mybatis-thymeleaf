@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/config:: configFragment">
+<meta charset="utf-8">
+</head>
+<body>
+	<nav th:replace="fragments/header:: headFragment"></nav>
+	<br>
+	<div class="container">
+		<h3>주문내역</h3>
+		<p>주문 내역을 볼 수 있습니다.</p>
+
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>주문번호</th>
+						<th>상품명</th>
+						<th>수량</th>
+						<th>총액</th>
+						<th>주문날짜</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${size} == 0">
+						<td colspan=5>주문이력 없습니다.</td>
+					</tr>
+					<tr th:unless="${size} == 0" th:each="list : ${orderList}">
+						<td th:text="${list.order_no}">1</td>
+						<td th:text="${list.product_name}">상품</td>
+						<td th:text="${list.order_quantity}">3</td>
+						<td th:text="${list.order_totalPrice}">10000</td>					
+						<td th:text="${#dates.format(list.order_date, 'yyyy-MM-dd HH:mm:ss')}">2021.06.22</td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="pagination justify-content-center">
+			<th:block th:if="${pageHandler.prevPage}">
+				<li class="page-item">
+					<a class="page-link"  th:href="@{'/auth/orderlist/'+${pageHandler.getStartPage() -1}}"><</a>
+				</li>
+			</th:block>
+			
+			<th:block th:if="${size} > 0" th:each="index : ${#numbers.sequence(pageHandler.getStartPage(),pageHandler.getEndPage())}">
+				<li class="page-item" th:classappend="${index} == ${pageHandler.getPageNum()} ? active">
+					<a class="page-link" th:text="${index}" th:href="@{'/auth/freeboard/'+${index}}">1</a>
+				</li>
+			</th:block>
+			
+			<th:block th:if="${pageHandler.nextPage}">
+				<li class="page-item">
+					<a class="page-link" th:href="@{'/auth/orderlist/'+${pageHandler.getEndPage() +1}}">></a>
+				</li>
+			</th:block>
+		</ul>
+		</div>
+	</div>
+		<footer th:replace="fragments/footer:: footFragment"></footer>
+		<script src="/js/board.js"></script>
+</body>
+</html>

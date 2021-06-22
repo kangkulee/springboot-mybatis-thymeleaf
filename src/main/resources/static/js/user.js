@@ -73,6 +73,8 @@ function DaumPostcode() {
 			//$("#sample4_postcode").val(data.zonecode); //5자리 새우편번호 사용
 			$("#sample4_roadAddress").val(fullRoadAddr);	
 			$("#sample4_jibunAddress").val(data.jibunAddress);
+			$("#old_addr").val("");
+			$("#old_addr_form").hide();
 			// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
 			if (data.autoRoadAddress) {
 				//예상되는 도로명 주소에 조합형 주소를 추가한다.
@@ -90,3 +92,52 @@ function DaumPostcode() {
 		}
 	}).open();
 }
+
+function updateUser(userNo) {
+	var user_password = null;
+	var roadAddress = $("#sample4_roadAddress").val();
+	var jibunAddress = $("#sample4_jibunAddress").val();
+	var user_addr = null;
+	
+	if(roadAddress != "") {
+		user_addr = roadAddress + $("#user_detailAddr").val();
+	}
+	
+	if(roadAddress == "") {
+		user_addr = jibunAddress + $("#user_detailAddr").val();
+	}
+	
+	if(user_addr == "") {
+		user_addr = $("#old_addr").val();
+	}
+
+	if($("#new_user_password").val() != "") {
+		user_password = $("#new_user_password").val()
+	}
+	let data = {
+		user_password: user_password,
+		user_addr: user_addr,
+		user_phone: $("#user_phone").val(),
+		user_email: $("#user_email").val()
+	};
+	
+	$.ajax({
+		// 수행 요청
+		type: "PUT",
+		url: "/api/user/" + userNo,
+		data: JSON.stringify(data),
+		contentType: "application/json; charset=utf-8",
+		dataType: "JSON"
+	}).done(function(resp) {
+		// 요청이 정상
+		if (resp.success != -1) {
+			alert("회원수정이 완료되었습니다.");
+		} else {
+			alert("회원수정이 실패하였습니다.");
+		};
+		location.href = "/";
+	}).fail(function(err) {
+		// 요청에 실패
+		alert(JSON.stringify(err));
+	});
+};
